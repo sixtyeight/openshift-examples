@@ -23,7 +23,7 @@ podTemplate(
         )
     ],
     volumes: [ 
-        secretSecretVolumeVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
+        secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
     ]
 ){node(label){
     stages {
