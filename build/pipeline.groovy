@@ -12,9 +12,8 @@ openshift.withCluster() {
 
 
 podTemplate(
-    cloud: openshift,
+    cloud: "openshift",
     label: label,
-    inheritFrom: "maven",
     containers: [
         containerTemplate(
             name: 'worker',
