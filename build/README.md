@@ -75,9 +75,10 @@ Two different ways to get Skopoe "into" Jenkins
 
 
 
+https://github.com/jenkinsci/kubernetes-plugin
+https://github.com/openshift/jenkins-client-plugin
 
 ```
-
 podTemplate(
   label: "scopeo", 
   cloud: "openshift", 
