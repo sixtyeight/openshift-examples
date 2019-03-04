@@ -1,12 +1,22 @@
 
 def label = "worker-${UUID.randomUUID().toString()}"
+def image
+
+openshift.withCluster() {
+    openshift.withProject() {
+        echo "Using project ${openshift.project()} in cluster with url ${openshift.cluster()}"
+        // echo openshift.selector("istag", "jenkins-slave-base-rhel7:v3.9").object().image.dockerImageReference
+        image = openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
+    }
+}
+
+
 podTemplate(
     label: label,
-
     containers: [
         containerTemplate(
             name: 'worker',
-            image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
+            image: image,
             resourceRequestMemory: "512Mi",
             resourceLimitMemory: "1Gi"
         )
