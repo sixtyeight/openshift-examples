@@ -29,12 +29,14 @@ podTemplate(
 ){}
 
 pipeline {
-    agent none
+    agent {
+        label labelName
+    }
     stages {
         stage('Playground') {    
-            agent {
-                label labelName
-            }
+            // agent {
+            //     label labelName
+            // }
             steps {
                 sh """
 
