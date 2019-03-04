@@ -19,11 +19,15 @@ pipeline {
     agent {
         kubernetes {
             label "worker-${UUID.randomUUID().toString()}"
-            containerTemplate {
-                name 'worker'
-                image openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
-                resourceRequestMemory "512Mi"
-                resourceLimitMemory "1Gi"
+            openshift.withCluster() {
+                        openshift.withProject() {
+                            containerTemplate {
+                                name 'worker'
+                                image openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
+                                resourceRequestMemory "512Mi"
+                                resourceLimitMemory "1Gi"
+                            }
+                        }
             }
         }
     }
