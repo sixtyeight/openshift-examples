@@ -6,7 +6,7 @@ openshift.withCluster() {
     openshift.withProject() {
         echo "Using project ${openshift.project()} in cluster with url ${openshift.cluster()}"
         // echo openshift.selector("istag", "jenkins-slave-base-rhel7:v3.9").object().image.dockerImageReference
-        image = openshift.selector("istag", "jenkins-slave-image-mgmt:v3.11").object().image.dockerImageReference
+        image = openshift.selector("istag", "jenkins-slave-image-mgmt:latest").object().image.dockerImageReference
     }
 }
 
