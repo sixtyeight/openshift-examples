@@ -1,36 +1,20 @@
-// def label = "worker-${UUID.randomUUID().toString()}"
-// podTemplate(
-//     label: label,
 
-//     containers: [
-//         containerTemplate(
-//             name: 'worker',
-//             image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
-//             resourceRequestMemory: "512Mi",
-//             resourceLimitMemory: "1Gi"
-//         )
-//     ],
-//     volumes: [ 
-//         secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
-//     ]
-// )
+def label = "worker-${UUID.randomUUID().toString()}"
+podTemplate(
+    label: label,
 
-pipeline {
-    agent {
-        kubernetes {
-            label "worker-${UUID.randomUUID().toString()}"
-            openshift.withCluster() {
-                        openshift.withProject() {
-                            containerTemplate {
-                                name 'worker'
-                                image openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
-                                resourceRequestMemory "512Mi"
-                                resourceLimitMemory "1Gi"
-                            }
-                        }
-            }
-        }
-    }
+    containers: [
+        containerTemplate(
+            name: 'worker',
+            image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
+            resourceRequestMemory: "512Mi",
+            resourceLimitMemory: "1Gi"
+        )
+    ],
+    volumes: [ 
+        secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
+    ]
+){node(label){
     stages {
         stage('Playground') {
             steps {
@@ -58,5 +42,7 @@ pipeline {
                 }
             }
         }
+    
+
     }
-}
+}}
