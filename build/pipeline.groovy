@@ -12,6 +12,7 @@ openshift.withCluster() {
 
 
 podTemplate(
+    cloud: openshift
     label: label,
     containers: [
         containerTemplate(
