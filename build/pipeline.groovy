@@ -26,7 +26,7 @@ podTemplate(
     volumes: [ 
         secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
     ]
-)
+){}
 
 pipeline {
     agent {
