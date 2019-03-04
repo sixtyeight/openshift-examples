@@ -1,34 +1,43 @@
-def namespace, appReleaseTag, webReleaseTag, prodCluster, prodProject, prodToken
-def label = "worker-${UUID.randomUUID().toString()}"
-podTemplate(
-    label: label,
+// def label = "worker-${UUID.randomUUID().toString()}"
+// podTemplate(
+//     label: label,
 
-    containers: [
-        containerTemplate(
-            name: 'worker',
-            image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
-            resourceRequestMemory: "512Mi",
-            resourceLimitMemory: "1Gi"
-        )
-    ],
-    volumes: [ 
-        secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
-    ]
-)
+//     containers: [
+//         containerTemplate(
+//             name: 'worker',
+//             image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
+//             resourceRequestMemory: "512Mi",
+//             resourceLimitMemory: "1Gi"
+//         )
+//     ],
+//     volumes: [ 
+//         secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
+//     ]
+// )
 
 pipeline {
     agent {
-        label: label
+        kubernetes {
+            label "worker-${UUID.randomUUID().toString()}"
+            containerTemplate {
+                name 'worker'
+                image openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
+                resourceRequestMemory "512Mi"
+                resourceLimitMemory "1Gi"
+            }
+        }
     }
     stages {
         stage('Playground') {
-            sh """
+            steps {
+                sh """
 
-            set +x
+                set +x
 
-            find -ls /quay
-            ls -la /quay/*
-            """
+                find -ls /quay
+                ls -la /quay/*
+                """
+            }
         }
 
         stage('Start build') {
@@ -43,11 +52,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-    
-        stage('Copy to Cluster A') {
-            steps {
             }
         }
     }
