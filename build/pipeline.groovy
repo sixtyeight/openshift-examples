@@ -6,7 +6,7 @@ podTemplate(
     containers: [
         containerTemplate(
             name: 'worker',
-            image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference
+            image: openshift.selector("istag", "jenkins-slave-base-rhel7:latest").object().image.dockerImageReference,
             resourceRequestMemory: "512Mi",
             resourceLimitMemory: "1Gi"
         )
