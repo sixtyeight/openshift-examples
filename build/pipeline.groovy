@@ -1,5 +1,5 @@
 
-def label_name = "worker-${UUID.randomUUID().toString()}"
+def labelName = "worker-${UUID.randomUUID().toString()}"
 def image
 
 openshift.withCluster() {
@@ -13,7 +13,7 @@ openshift.withCluster() {
 
 podTemplate(
     cloud: "openshift",
-    label: label_name,
+    label: labelName,
     inheritFrom: "maven", 
     containers: [
         containerTemplate(
@@ -35,7 +35,7 @@ pipeline {
     stages {
         stage('Playground') {    
             agent {
-                label label_name
+                label labelName
             }
             steps {
                 sh """
