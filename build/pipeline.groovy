@@ -21,10 +21,11 @@ podTemplate(
             resourceRequestMemory: "512Mi",
             resourceLimitMemory: "1Gi"
         )
-    ],
-    volumes: [ 
-        secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
     ]
+    // ,
+    // volumes: [ 
+        // secretSecretVolumeVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
+    // ]
 ){node(label){
     stages {
         stage('Playground') {
