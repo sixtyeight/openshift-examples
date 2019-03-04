@@ -49,3 +49,56 @@ oc new-build registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift~gi
 # If you like, create app
 oc new-app chaos-professor
 ```
+
+
+## Build and push image into many registries
+
+Based on [Promoting container images between registries with skopeo](https://blog.openshift.com/promoting-container-images-between-registries-with-skopeo/)
+
+
+Two different ways to get Skopoe "into" Jenkins
+
+1) Custom Jenkins Slave
+    
+    https://github.com/siamaksade/openshift-cd-demo/blob/ocp-3.11/cicd-template.yaml#L229
+    
+    Source for the slave image https://github.com/siamaksade/jenkins-slave-skopeo
+
+    Based on https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/openshift_pipeline.html
+
+    https://github.com/redhat-cop/containers-quickstarts/tree/master/jenkins-slaves/jenkins-slave-image-mgmt
+
+2) Custom Jenkins Agent, was the differents?
+
+
+
+
+
+
+
+```
+
+podTemplate(
+  label: "scopeo", 
+  cloud: "openshift", 
+  inheritFrom: "maven", 
+  containers: [
+    containerTemplate(
+      name: "jnlp", 
+      image: "quay.io/your_repo/jenkins-slave-skopeo-centos:master", 
+      resourceRequestMemory: "512Mi", 
+      resourceLimitMemory: "1Gi"
+    )
+  ]
+)
+```
+Dockerfile
+
+```
+FROM openshift/jenkins-slave-base-centos7
+MAINTAINER Tero Ahonen <tero@redhat.com>
+USER root
+RUN yum -y install skopeo
+USER 1001
+```
+

@@ -7,6 +7,7 @@ sudo skopeo inspect containers-storage:localhost/simple-http-server:latest
 sudo skopeo copy --authfile=/home/cloud-user/rbo-demo-demo-auth.json containers-storage:localhost/simple-http-server:latest docker://quay.io/rbo-demo/simple-http-server:latest
 ```
 
-
-
-
+# Build on openshift
+```
+oc new-build --context-dir='simple-http-server/' https://github.com/rbo/openshift-examples.git
+```
