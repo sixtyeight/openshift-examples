@@ -27,7 +27,6 @@ podTemplate(
         secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
     ]
 ){node(label){
-    stages {
         stage('Playground') {
             steps {
                 sh """
@@ -54,7 +53,4 @@ podTemplate(
                 }
             }
         }
-    
-
-    }
 }}
