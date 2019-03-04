@@ -14,10 +14,10 @@ openshift.withCluster() {
 podTemplate(
     cloud: "openshift",
     label: labelName,
-    inheritFrom: "maven", 
+    // inheritFrom: "maven", 
     containers: [
         containerTemplate(
-            name: 'worker',
+            name: 'jnlp',
             image: image,
             resourceRequestMemory: "512Mi",
             resourceLimitMemory: "1Gi"
@@ -29,9 +29,7 @@ podTemplate(
 ){}
 
 pipeline {
-    agent {
-        label "maven"
-    }
+    agent none
     stages {
         stage('Playground') {    
             agent {
