@@ -1,0 +1,15 @@
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: simple-http-server-pipeline
+spec:
+  source:
+    git:
+      uri: https://github.com/rbo/openshift-examples.git
+      ref: "pipeline"
+    type: Git
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: build/pipeline.conf 
