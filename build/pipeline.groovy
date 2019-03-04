@@ -26,8 +26,17 @@ podTemplate(
     volumes: [ 
         secretVolume(secretName: 'rbo-demo-demo-auth', mountPath: '/quay/')
     ]
-){node(label){
-        stage('Playground') {
+)
+
+pipeline {
+    agent {
+        label "maven"
+    }
+    stages {
+        stage('Playground') {    
+            agent {
+                label label
+            }
             steps {
                 sh """
 
@@ -53,4 +62,5 @@ podTemplate(
                 }
             }
         }
-}}
+    }
+}
