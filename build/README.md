@@ -103,3 +103,25 @@ RUN yum -y install skopeo
 USER 1001
 ```
 
+
+## Build & Deploy namespace one -> deploy namespace 2
+
+```
+oc new-project prod
+
+oc new-project dev
+
+oc process -f https://raw.githubusercontent.com/rbo/openshift-tasks/master/app-template.yaml -p SOURCE_URL=https://github.com/rbo/openshift-tasks | oc create -f -
+
+oc policy add-role-to-group edit system:serviceaccounts:default -n prod
+
+TRIGER: OpenShift ONLY
+
+oc tag dev/tasks:latest prod/tasks:latest
+oc project prod
+oc new-app tasks
+oc expose svc/tasks
+
+# Rollback - OPENSHIFT ONLY!
+oc rollback dc/tasks
+```
